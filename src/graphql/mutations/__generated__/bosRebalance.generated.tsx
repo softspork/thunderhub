@@ -10,38 +10,25 @@ export type BosRebalanceMutationVariables = Types.Exact<{
   max_fee?: Types.Maybe<Types.Scalars['Int']>;
   max_fee_rate?: Types.Maybe<Types.Scalars['Int']>;
   max_rebalance?: Types.Maybe<Types.Scalars['Int']>;
+  timeout_minutes?: Types.Maybe<Types.Scalars['Int']>;
   node?: Types.Maybe<Types.Scalars['String']>;
   out_through?: Types.Maybe<Types.Scalars['String']>;
   out_inbound?: Types.Maybe<Types.Scalars['Int']>;
 }>;
 
 
-export type BosRebalanceMutation = (
-  { __typename?: 'Mutation' }
-  & { bosRebalance?: Types.Maybe<(
-    { __typename?: 'bosRebalanceResultType' }
-    & { increase?: Types.Maybe<(
-      { __typename?: 'bosIncreaseType' }
-      & Pick<Types.BosIncreaseType, 'increased_inbound_on' | 'liquidity_inbound' | 'liquidity_inbound_opening' | 'liquidity_inbound_pending' | 'liquidity_outbound' | 'liquidity_outbound_opening' | 'liquidity_outbound_pending'>
-    )>, decrease?: Types.Maybe<(
-      { __typename?: 'bosDecreaseType' }
-      & Pick<Types.BosDecreaseType, 'decreased_inbound_on' | 'liquidity_inbound' | 'liquidity_inbound_opening' | 'liquidity_inbound_pending' | 'liquidity_outbound' | 'liquidity_outbound_opening' | 'liquidity_outbound_pending'>
-    )>, result?: Types.Maybe<(
-      { __typename?: 'bosResultType' }
-      & Pick<Types.BosResultType, 'rebalanced' | 'rebalance_fees_spent'>
-    )> }
-  )> }
-);
+export type BosRebalanceMutation = { __typename?: 'Mutation', bosRebalance?: Types.Maybe<{ __typename?: 'bosRebalanceResultType', increase?: Types.Maybe<{ __typename?: 'bosIncreaseType', increased_inbound_on?: Types.Maybe<string>, liquidity_inbound?: Types.Maybe<string>, liquidity_inbound_opening?: Types.Maybe<string>, liquidity_inbound_pending?: Types.Maybe<string>, liquidity_outbound?: Types.Maybe<string>, liquidity_outbound_opening?: Types.Maybe<string>, liquidity_outbound_pending?: Types.Maybe<string> }>, decrease?: Types.Maybe<{ __typename?: 'bosDecreaseType', decreased_inbound_on?: Types.Maybe<string>, liquidity_inbound?: Types.Maybe<string>, liquidity_inbound_opening?: Types.Maybe<string>, liquidity_inbound_pending?: Types.Maybe<string>, liquidity_outbound?: Types.Maybe<string>, liquidity_outbound_opening?: Types.Maybe<string>, liquidity_outbound_pending?: Types.Maybe<string> }>, result?: Types.Maybe<{ __typename?: 'bosResultType', rebalanced?: Types.Maybe<string>, rebalance_fees_spent?: Types.Maybe<string> }> }> };
 
 
 export const BosRebalanceDocument = gql`
-    mutation BosRebalance($avoid: [String], $in_through: String, $max_fee: Int, $max_fee_rate: Int, $max_rebalance: Int, $node: String, $out_through: String, $out_inbound: Int) {
+    mutation BosRebalance($avoid: [String], $in_through: String, $max_fee: Int, $max_fee_rate: Int, $max_rebalance: Int, $timeout_minutes: Int, $node: String, $out_through: String, $out_inbound: Int) {
   bosRebalance(
     avoid: $avoid
     in_through: $in_through
     max_fee: $max_fee
     max_fee_rate: $max_fee_rate
     max_rebalance: $max_rebalance
+    timeout_minutes: $timeout_minutes
     node: $node
     out_through: $out_through
     out_inbound: $out_inbound
@@ -91,6 +78,7 @@ export type BosRebalanceMutationFn = Apollo.MutationFunction<BosRebalanceMutatio
  *      max_fee: // value for 'max_fee'
  *      max_fee_rate: // value for 'max_fee_rate'
  *      max_rebalance: // value for 'max_rebalance'
+ *      timeout_minutes: // value for 'timeout_minutes'
  *      node: // value for 'node'
  *      out_through: // value for 'out_through'
  *      out_inbound: // value for 'out_inbound'

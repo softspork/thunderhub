@@ -44,6 +44,7 @@ export const getContext = (context: ResolverContext) => {
   const auth = cookies[appConstants.cookieName];
   const lnMarketsAuth = cookies[appConstants.lnMarketsAuth];
   const tokenAuth = cookies[appConstants.tokenCookieName];
+  const ambossAuth = cookies[appConstants.ambossCookieName];
 
   let lnd: LndObject | null = null;
   let id: string | null = null;
@@ -55,7 +56,7 @@ export const getContext = (context: ResolverContext) => {
         lnd = getAuthLnd(data.id, sso, accountConfig);
         id = data.id;
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.silly('Authentication cookie failed');
     }
   }
@@ -70,6 +71,7 @@ export const getContext = (context: ResolverContext) => {
     res,
     lnMarketsAuth,
     tokenAuth,
+    ambossAuth,
   };
 
   return resolverContext;

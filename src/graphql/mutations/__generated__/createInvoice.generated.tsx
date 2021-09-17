@@ -8,24 +8,20 @@ export type CreateInvoiceMutationVariables = Types.Exact<{
   amount: Types.Scalars['Int'];
   description?: Types.Maybe<Types.Scalars['String']>;
   secondsUntil?: Types.Maybe<Types.Scalars['Int']>;
+  includePrivate?: Types.Maybe<Types.Scalars['Boolean']>;
 }>;
 
 
-export type CreateInvoiceMutation = (
-  { __typename?: 'Mutation' }
-  & { createInvoice?: Types.Maybe<(
-    { __typename?: 'newInvoiceType' }
-    & Pick<Types.NewInvoiceType, 'request' | 'id'>
-  )> }
-);
+export type CreateInvoiceMutation = { __typename?: 'Mutation', createInvoice?: Types.Maybe<{ __typename?: 'newInvoiceType', request: string, id: string }> };
 
 
 export const CreateInvoiceDocument = gql`
-    mutation CreateInvoice($amount: Int!, $description: String, $secondsUntil: Int) {
+    mutation CreateInvoice($amount: Int!, $description: String, $secondsUntil: Int, $includePrivate: Boolean) {
   createInvoice(
     amount: $amount
     description: $description
     secondsUntil: $secondsUntil
+    includePrivate: $includePrivate
   ) {
     request
     id
@@ -50,6 +46,7 @@ export type CreateInvoiceMutationFn = Apollo.MutationFunction<CreateInvoiceMutat
  *      amount: // value for 'amount'
  *      description: // value for 'description'
  *      secondsUntil: // value for 'secondsUntil'
+ *      includePrivate: // value for 'includePrivate'
  *   },
  * });
  */

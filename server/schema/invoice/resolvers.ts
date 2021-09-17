@@ -1,5 +1,6 @@
 import { randomBytes, createHash } from 'crypto';
 import {
+  pay,
   payViaRoutes,
   createInvoice,
   decodePaymentRequest,
@@ -11,10 +12,17 @@ import { ContextType } from 'server/types/apiTypes';
 import { logger } from 'server/helpers/logger';
 import { requestLimiter } from 'server/helpers/rateLimiter';
 import { getErrorMsg } from 'server/helpers/helpers';
-import { to } from 'server/helpers/async';
+import { to, toWithError } from 'server/helpers/async';
 import { CreateInvoiceType, DecodedType } from 'server/types/ln-service.types';
 
 const KEYSEND_TYPE = '5482373484';
+
+type PayType = {
+  max_fee: Number;
+  max_paths: Number;
+  request: String;
+  out?: String[];
+};
 
 export const invoiceResolvers = {
   Query: {
@@ -78,12 +86,21 @@ export const invoiceResolvers = {
   Mutation: {
     createInvoice: async (
       _: undefined,
-      params: { amount: number; description?: string; secondsUntil?: number },
+      {
+        amount,
+        description,
+        secondsUntil,
+        includePrivate,
+      }: {
+        amount: number;
+        description?: string;
+        secondsUntil?: number;
+        includePrivate?: boolean;
+      },
       context: ContextType
     ) => {
       await requestLimiter(context.ip, 'createInvoice');
 
-      const { amount, description, secondsUntil } = params;
       const { lnd } = context;
 
       const getDate = (secondsUntil: number) => {
@@ -93,12 +110,19 @@ export const invoiceResolvers = {
         return date.toISOString();
       };
 
+      const invoiceParams = {
+        tokens: amount,
+        ...(description && { description }),
+        ...(!!secondsUntil && { expires_at: getDate(secondsUntil) }),
+        ...(includePrivate && { is_including_private_channels: true }),
+      };
+
+      logger.info('Creating invoice with params: %o', invoiceParams);
+
       return await to<CreateInvoiceType>(
         createInvoiceRequest({
           lnd,
-          ...(description && { description }),
-          ...(!!secondsUntil && { expires_at: getDate(secondsUntil) }),
-          tokens: amount,
+          ...invoiceParams,
         })
       );
     },
@@ -139,7 +163,7 @@ export const invoiceResolvers = {
       let route;
       try {
         route = JSON.parse(params.route);
-      } catch (error) {
+      } catch (error: any) {
         logger.error('Corrupt route json: %o', error);
         throw new Error('Corrupt Route JSON');
       }
@@ -160,6 +184,32 @@ export const invoiceResolvers = {
 
       return true;
     },
+
+    pay: async (
+      _: undefined,
+      { max_fee, max_paths, out, request }: PayType,
+      context: ContextType
+    ) => {
+      const { lnd } = context;
+      const props = {
+        request,
+        max_fee,
+        max_paths,
+        outgoing_channels: out || [],
+      };
+
+      logger.debug('Paying invoice with params: %o', props);
+
+      const [response, error] = await toWithError(pay({ lnd, ...props }));
+
+      if (error) {
+        logger.error('Error paying invoice: %o', error);
+        throw new Error(getErrorMsg(error));
+      }
+
+      logger.debug('Paid invoice: %o', response);
+      return true;
+    },
     payViaRoute: async (_: undefined, params: any, context: ContextType) => {
       await requestLimiter(context.ip, 'payViaRoute');
 
@@ -169,7 +219,7 @@ export const invoiceResolvers = {
       let route;
       try {
         route = JSON.parse(routeJSON);
-      } catch (error) {
+      } catch (error: any) {
         logger.error('Corrupt route json: %o', error);
         throw new Error('Corrupt Route JSON');
       }

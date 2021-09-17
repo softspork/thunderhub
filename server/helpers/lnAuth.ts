@@ -109,13 +109,15 @@ export const getLnMarketsAuth = async (
 
   // Get a new lnUrl from LnMarkets
   try {
-    const response = await fetchWithProxy(`${appUrls.lnMarkets}/lnurl/a/c`);
-    const json = await response.json();
+    const response = await fetchWithProxy(`${appUrls.lnMarkets}/lnurl/auth`, {
+      method: 'post',
+    });
+    const json = (await response.json()) as any;
 
     logger.debug('Get lnUrl from LnMarkets response: %o', json);
     lnUrl = json?.lnurl;
     if (!lnUrl) throw new Error();
-  } catch (error) {
+  } catch (error: any) {
     logger.error(
       `Error getting lnAuth url from ${appUrls.lnMarkets}. Error: %o`,
       error
@@ -130,7 +132,7 @@ export const getLnMarketsAuth = async (
   // Try to authenticate with lnMarkets
   try {
     const response = await fetchWithProxy(`${finalUrl}&jwt=true&expiry=3600`);
-    const json = await response.json();
+    const json = (await response.json()) as any;
 
     logger.debug('LnUrlAuth response: %o', json);
 
@@ -139,7 +141,7 @@ export const getLnMarketsAuth = async (
     }
 
     return { newCookie: true, cookieString: json.token, json };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error authenticating with LnUrl service: %o', error);
     throw new Error('ProblemAuthenticatingWithLnUrlService');
   }

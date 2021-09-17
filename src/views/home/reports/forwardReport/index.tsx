@@ -10,6 +10,7 @@ import {
 } from '../../../../components/generic/Styled';
 import { mediaWidths } from '../../../../styles/Themes';
 import { ForwardChannelsReport } from './ForwardChannelReport';
+import { ForwardResume } from './ForwardResume';
 import { ForwardsGraph } from './ForwardsGraph';
 
 export const CardContent = styled.div`
@@ -40,8 +41,8 @@ export const options = [
 ];
 
 export const typeOptions = [
-  { label: 'Amount', value: 'amount' },
-  { label: 'Tokens', value: 'tokens' },
+  { label: 'Count', value: 'amount' },
+  { label: 'Amount', value: 'tokens' },
   { label: 'Fees', value: 'fee' },
 ];
 
@@ -72,6 +73,8 @@ export const ForwardBox = () => {
       </CardTitle>
       <Card mobileCardPadding={'8px'}>
         <ForwardsGraph days={days} type={type} />
+        <Separation />
+        <ForwardResume type={type} />
         <Separation />
         <ForwardChannelsReport days={days.value} order={type.value} />
       </Card>

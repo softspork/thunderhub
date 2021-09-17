@@ -5,7 +5,7 @@ import { logger } from 'server/helpers/logger';
 import { rebalance } from 'balanceofsatoshis/swaps';
 import { pay } from 'balanceofsatoshis/network';
 import { getAccountingReport } from 'balanceofsatoshis/balances';
-import request from '@alexbosworth/request';
+import { fetchRequest } from 'balanceofsatoshis/commands';
 import { RebalanceResponseType } from 'server/types/balanceofsatoshis.types';
 import { getErrorMsg } from 'server/helpers/helpers';
 
@@ -23,6 +23,7 @@ type RebalanceType = {
   max_fee?: Number;
   max_fee_rate?: Number;
   max_rebalance?: Number;
+  timeout_minutes?: Number;
   node?: String;
   out_channels?: String[];
   out_through?: String;
@@ -50,7 +51,7 @@ export const bosResolvers = {
         getAccountingReport({
           lnd,
           logger,
-          request,
+          request: fetchRequest,
           is_csv: true,
           ...params,
         })
@@ -69,6 +70,7 @@ export const bosResolvers = {
         max_paths,
         ...(message && { message }),
         out: out || [],
+        avoid: [],
       };
 
       logger.debug('Paying invoice with params: %o', props);
@@ -98,6 +100,7 @@ export const bosResolvers = {
         max_fee,
         max_fee_rate,
         max_rebalance,
+        timeout_minutes,
         node,
         out_through,
         out_inbound,
@@ -110,6 +113,7 @@ export const bosResolvers = {
         ...(in_through && { in_through }),
         ...(max_fee && max_fee > 0 && { max_fee }),
         ...(max_fee_rate && max_fee_rate > 0 && { max_fee_rate }),
+        ...(timeout_minutes && timeout_minutes > 0 && { timeout_minutes }),
         ...(max_rebalance &&
           max_rebalance > 0 && { max_rebalance: `${max_rebalance}` }),
         ...(node && { node }),

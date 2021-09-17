@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Zap, Anchor, Pocket, HelpCircle, X } from 'react-feather';
 import { ColorButton } from 'src/components/buttons/colorButton/ColorButton';
-import { useNodeInfo } from 'src/hooks/UseNodeInfo';
 import ReactTooltip from 'react-tooltip';
 import { renderLine } from 'src/components/generic/helpers';
+import { useNodeBalances } from 'src/hooks/UseNodeBalances';
+import Big from 'big.js';
 import {
   Card,
   CardWithTitle,
@@ -50,8 +51,23 @@ const sectionColor = '#FFD300';
 export const AccountInfo = () => {
   const [state, setState] = useState<string>('none');
 
-  const { chainBalance, chainPending, channelBalance, channelPending } =
-    useNodeInfo();
+  const { onchain, lightning } = useNodeBalances();
+
+  const totalAmount = new Big(onchain.confirmed)
+    .add(onchain.pending)
+    .add(lightning.confirmed)
+    .add(lightning.pending)
+    .toString();
+
+  const totalChain = new Big(onchain.confirmed).add(onchain.pending).toString();
+  const totalLightning = new Big(lightning.confirmed)
+    .add(lightning.pending)
+    .toString();
+
+  const chainBalance = Number(onchain.confirmed);
+  const chainPending = Number(onchain.pending);
+  const channelBalance = Number(lightning.confirmed);
+  const channelPending = Number(lightning.pending);
 
   const renderContent = () => {
     switch (state) {
@@ -182,15 +198,24 @@ export const AccountInfo = () => {
                   : '#652EC7'
               }
             />
-            <Tile startTile={true}>
-              <DarkSubTitle>Account</DarkSubTitle>
-              <div>Total</div>
+            <Tile>
+              <DarkSubTitle>Total</DarkSubTitle>
+              <div>
+                <Price amount={totalAmount} />
+              </div>
             </Tile>
-            {renderBalances(
-              chainBalance + channelBalance,
-              chainPending + channelPending,
-              'balance'
-            )}
+            <Tile>
+              <DarkSubTitle>Bitcoin</DarkSubTitle>
+              <div>
+                <Price amount={totalChain} />
+              </div>
+            </Tile>
+            <Tile>
+              <DarkSubTitle>Lightning</DarkSubTitle>
+              <div>
+                <Price amount={totalLightning} />
+              </div>
+            </Tile>
           </ResponsiveLine>
         </Card>
       </CardWithTitle>

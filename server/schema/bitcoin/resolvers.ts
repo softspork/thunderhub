@@ -18,7 +18,7 @@ export const bitcoinResolvers = {
         const json = await response.json();
 
         return JSON.stringify(json);
-      } catch (error) {
+      } catch (error: any) {
         logger.error('Error getting bitcoin price: %o', error);
         throw new Error('Problem getting Bitcoin price.');
       }
@@ -32,7 +32,7 @@ export const bitcoinResolvers = {
 
       try {
         const response = await fetchWithProxy(appUrls.fees);
-        const json = await response.json();
+        const json = (await response.json()) as any;
 
         if (json) {
           const { fastestFee, halfHourFee, hourFee, minimumFee } = json;
@@ -44,7 +44,7 @@ export const bitcoinResolvers = {
           };
         }
         throw new Error('Problem getting Bitcoin fees.');
-      } catch (error) {
+      } catch (error: any) {
         logger.error('Error getting bitcoin fees: %o', error);
         throw new Error('Problem getting Bitcoin fees.');
       }

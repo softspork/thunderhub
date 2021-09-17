@@ -86,7 +86,9 @@ const Chart = ({
 
   const axisColor = themeContext.mode === 'light' ? 'black' : 'white';
 
-  const keys = Object.keys(data[0]).filter(d => d !== 'date');
+  const keys = Object.keys(data[0] || {}).filter(d => d !== 'date');
+
+  if (!keys.length) return null;
 
   let tooltipTimeout: number;
 
@@ -125,7 +127,7 @@ const Chart = ({
 
   return (
     <div style={{ position: 'relative' }}>
-      <svg width={width} height={height}>
+      <svg width={width} height={height - 10}>
         <Group top={margin.top} left={margin.left}>
           <BarGroup
             data={data}

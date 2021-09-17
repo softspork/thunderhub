@@ -28,6 +28,9 @@ export const generalTypes = gql`
 
 export const queryTypes = gql`
   type Query {
+    getAmbossLoginToken: String!
+    getAmbossUser: AmbossUserType
+    getNodeBalances: BalancesType!
     getBosNodeScores(publicKey: String!): [BosScore]!
     getBosScores: BosScoreResponse!
     getBaseInfo: BaseInfo!
@@ -50,7 +53,6 @@ export const queryTypes = gql`
     getVolumeHealth: channelsHealth
     getTimeHealth: channelsTimeHealth
     getFeeHealth: channelsFeeHealth
-    getChannelBalance: channelBalanceType
     getChannel(id: String!, pubkey: String): singleChannelType!
     getChannels(active: Boolean): [channelType]!
     getClosedChannels(type: String): [closedChannelType]
@@ -79,8 +81,6 @@ export const queryTypes = gql`
     getPeers: [peerType]
     signMessage(message: String!): String
     verifyMessage(message: String!, signature: String!): String
-    getChainBalance: String!
-    getPendingChainBalance: String!
     getChainTransactions: [getTransactionsType]
     getUtxos: [getUtxosType]
     getMessages(
@@ -96,6 +96,7 @@ export const queryTypes = gql`
 
 export const mutationTypes = gql`
   type Mutation {
+    loginAmboss: Boolean
     getAuthToken(cookie: String): Boolean!
     getSessionToken(id: String, password: String): String!
     claimBoltzTransaction(
@@ -162,8 +163,15 @@ export const mutationTypes = gql`
       amount: Int!
       description: String
       secondsUntil: Int
+      includePrivate: Boolean
     ): newInvoiceType
     circularRebalance(route: String!): Boolean
+    pay(
+      max_fee: Int!
+      max_paths: Int!
+      out: [String]
+      request: String!
+    ): Boolean
     bosPay(
       max_fee: Int!
       max_paths: Int!
@@ -177,6 +185,7 @@ export const mutationTypes = gql`
       max_fee: Int
       max_fee_rate: Int
       max_rebalance: Int
+      timeout_minutes: Int
       node: String
       out_through: String
       out_inbound: Int
@@ -205,6 +214,6 @@ export const mutationTypes = gql`
       maxFee: Int
     ): Int
     logout: Boolean!
-    createMacaroon(permissions: permissionsType!): String
+    createMacaroon(permissions: permissionsType!): CreateMacaroon!
   }
 `;

@@ -57,7 +57,9 @@ const Chart = ({
   const themeContext = useContext(ThemeContext);
   const axisColor = themeContext.mode === 'light' ? 'black' : 'white';
 
-  const keys = Object.keys(data[0]).filter(d => d !== 'label');
+  const keys = Object.keys(data[0] || {}).filter(d => d !== 'label');
+
+  if (!keys.length) return null;
 
   const maxValue = Math.max(
     ...data.map(d => Math.max(...keys.map(key => Number(d[key]))))
@@ -96,7 +98,7 @@ const Chart = ({
 
   return (
     <div style={{ position: 'relative' }}>
-      <svg width={width} height={height}>
+      <svg width={width} height={height - 10}>
         <Group top={margin.top} left={margin.left}>
           <BarGroupHorizontal
             data={data}

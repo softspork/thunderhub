@@ -11,8 +11,8 @@ export const LnMarketsApi = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return await response.json();
-    } catch (error) {
+      return (await response.json()) as any;
+    } catch (error: any) {
       logger.error(
         `Error getting user info from ${appUrls.lnMarkets}/user. Error: %o`,
         error
@@ -34,8 +34,8 @@ export const LnMarketsApi = {
           body: JSON.stringify({ amount, unit: 'sat' }),
         }
       );
-      return await response.json();
-    } catch (error) {
+      return (await response.json()) as any;
+    } catch (error: any) {
       logger.error(
         `Error getting invoice to deposit from LnMarkets. Error: %o`,
         error
@@ -57,8 +57,8 @@ export const LnMarketsApi = {
           body: JSON.stringify({ amount, unit: 'sat', invoice }),
         }
       );
-      return await response.json();
-    } catch (error) {
+      return (await response.json()) as any;
+    } catch (error: any) {
       logger.error(`Error withdrawing from LnMarkets. Error: %o`, error);
       throw new Error('ProblemWithdrawingFromLnMarkets');
     }

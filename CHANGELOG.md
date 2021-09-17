@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.25](https://github.com/apotdevin/thunderhub/compare/v0.12.24...v0.12.25) (2021-09-08)
+
+
+### Features
+
+* add timeout_minutes to bos rebalance ([#316](https://github.com/apotdevin/thunderhub/issues/316)) ([f7cb1a1](https://github.com/apotdevin/thunderhub/commit/f7cb1a1b76ad736545cac9a60e61341a0da9f8ac))
+
+
+### Docs
+
+* move readme ([543c611](https://github.com/apotdevin/thunderhub/commit/543c61179c0d4669f14f3a422153dcdbc0e7c921))
+
+
+### Improvements
+
+* bump dependencies ([#325](https://github.com/apotdevin/thunderhub/issues/325)) ([5ee6b95](https://github.com/apotdevin/thunderhub/commit/5ee6b95c876fd93df29819d2c572f7b06305d621))
+* bump deps ([464b059](https://github.com/apotdevin/thunderhub/commit/464b0595bdde0b1eaa6e22efdd830054a68fa615))
+* change download file name ([042dd12](https://github.com/apotdevin/thunderhub/commit/042dd12e09f0797ce95f17b5e30a1b5c59842d2c))
+* update dependencies ([#333](https://github.com/apotdevin/thunderhub/issues/333)) ([8b2650f](https://github.com/apotdevin/thunderhub/commit/8b2650ffbfb0e8787a15a2a032f4f1e01cc832d2))
+* update min wumbo size ([6227291](https://github.com/apotdevin/thunderhub/commit/62272915504ec20a137f26e07de4f7fb78a76002))
+
+### [0.12.24](https://github.com/apotdevin/thunderhub/compare/v0.12.23...v0.12.24) (2021-07-30)
+
+
+### Bug Fixes
+
+* graph margin ([#310](https://github.com/apotdevin/thunderhub/issues/310)) ([d3d49a1](https://github.com/apotdevin/thunderhub/commit/d3d49a18b8fe1a02e8c8b313e7403e176df0c14c))
+
+
+### Improvements
+
+* update dependencies ([#309](https://github.com/apotdevin/thunderhub/issues/309)) ([5bd02a7](https://github.com/apotdevin/thunderhub/commit/5bd02a734dcb160242bb6785c7a40ba0a0c45473))
+
+### [0.12.23](https://github.com/apotdevin/thunderhub/compare/v0.12.22...v0.12.23) (2021-07-24)
+
+
+### Bug Fixes
+
+* **server:** updated ln markets to v1 api ([#305](https://github.com/apotdevin/thunderhub/issues/305)) ([ecb0e1c](https://github.com/apotdevin/thunderhub/commit/ecb0e1cf499d3276a332d5cf212a3cefd23905e8))
+
+
+### Improvements
+
+* forward resume ([#306](https://github.com/apotdevin/thunderhub/issues/306)) ([edc9042](https://github.com/apotdevin/thunderhub/commit/edc9042475211dd6a6702bbdc8151a47ce6cc398))
+* toggle private hints ([#304](https://github.com/apotdevin/thunderhub/issues/304)) ([5a212db](https://github.com/apotdevin/thunderhub/commit/5a212db898aeb2a6c38c13dc2af2a4266bb7f0b4))
+* update deps ([#307](https://github.com/apotdevin/thunderhub/issues/307)) ([ce74f60](https://github.com/apotdevin/thunderhub/commit/ce74f60d834d59fd1b9dfd412f5470c8da36e372))
+
+### [0.12.22](https://github.com/apotdevin/thunderhub/compare/v0.12.21...v0.12.22) (2021-07-21)
+
+
+### Bug Fixes
+
+* undefined error ([6087e01](https://github.com/apotdevin/thunderhub/commit/6087e018eadd4503e6aec972b54f3f2f512a9610))
+* updating all channels with a base fee of 0 now works [[#299](https://github.com/apotdevin/thunderhub/issues/299)] ([5c4221e](https://github.com/apotdevin/thunderhub/commit/5c4221e455b116bf27347351200b23f772cb16df))
+
+
+### Improvements
+
+* hex encoded create macaroon ([e858cdd](https://github.com/apotdevin/thunderhub/commit/e858cdd8205a97aada9712b231f363ecd08fc22d))
+
 ### [0.12.21](https://github.com/apotdevin/thunderhub/compare/v0.12.20...v0.12.21) (2021-07-04)
 
 

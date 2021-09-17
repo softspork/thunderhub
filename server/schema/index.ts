@@ -45,6 +45,9 @@ import { lnMarketsTypes } from './lnmarkets/types';
 import { boltzResolvers } from './boltz/resolvers';
 import { boltzTypes } from './boltz/types';
 import { forwardsResolver } from './forwards/resolvers';
+import { macaroonTypes } from './macaroon/types';
+import { ambossTypes } from './amboss/types';
+import { ambossResolvers } from './amboss/resolvers';
 
 const typeDefs = [
   generalTypes,
@@ -69,6 +72,8 @@ const typeDefs = [
   lnUrlTypes,
   lnMarketsTypes,
   boltzTypes,
+  macaroonTypes,
+  ambossTypes,
 ];
 
 const resolvers = merge(
@@ -96,7 +101,8 @@ const resolvers = merge(
   lnUrlResolvers,
   lnMarketsResolvers,
   boltzResolvers,
-  forwardsResolver
+  forwardsResolver,
+  ambossResolvers
 );
 
 export const schema = makeExecutableSchema({ typeDefs, resolvers });
